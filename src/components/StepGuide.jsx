@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export default function StepGuide({ steps, activeStep, onStepChange, lang, dish }) {
+export default function StepGuide({ steps, activeStep, onStepChange, lang, dish, labels }) {
   const stepRefs = useRef([]);
 
   useEffect(() => {
@@ -10,15 +10,28 @@ export default function StepGuide({ steps, activeStep, onStepChange, lang, dish 
   const totalSteps = steps.length;
   const progress = totalSteps > 0 ? Math.round(((activeStep + 1) / totalSteps) * 100) : 0;
 
+  // Use translated labels, fall back to English
+  const L = labels || {
+    stepByStep: 'Step-by-Step Process',
+    currentStep: 'Current Step',
+    recipeComplete: '🎉 Recipe Complete!',
+    prevStep: '← Previous',
+    nextStep: 'Next Step →',
+    guideIn: 'Guide in',
+    stepOf: 'Step',
+    of: 'of',
+    complete: 'complete',
+  };
+
   return (
     <div className="card">
       {/* Header */}
       <div className="flex items-center justify-between mb-2">
         <h2 className="font-display text-xl font-bold text-charcoal flex items-center gap-2">
-          <span>📖</span> Step-by-Step Process
+          <span>📖</span> {L.stepByStep}
         </h2>
         <span className="text-sm text-charcoal/50 font-body">
-          Step {Math.min(activeStep + 1, totalSteps)} of {totalSteps}
+          {L.stepOf} {Math.min(activeStep + 1, totalSteps)} {L.of} {totalSteps}
         </span>
       </div>
 
@@ -30,7 +43,7 @@ export default function StepGuide({ steps, activeStep, onStepChange, lang, dish 
             style={{ width: `${progress}%` }}
           />
         </div>
-        <p className="text-xs text-charcoal/40 mt-1">{progress}% complete</p>
+        <p className="text-xs text-charcoal/40 mt-1">{progress}% {L.complete}</p>
       </div>
 
       {/* Steps list */}
@@ -80,7 +93,7 @@ export default function StepGuide({ steps, activeStep, onStepChange, lang, dish 
                   <div className="flex-1 min-w-0">
                     {isActive && (
                       <span className="text-terracotta text-xs font-bold uppercase tracking-widest mb-1 block">
-                        Current Step
+                        {L.currentStep}
                       </span>
                     )}
                     <p className={`font-body text-sm leading-relaxed ${isActive ? 'text-charcoal font-semibold' : isDone ? 'text-charcoal/50' : 'text-charcoal/80'}`}>
@@ -102,7 +115,7 @@ export default function StepGuide({ steps, activeStep, onStepChange, lang, dish 
           id="prev-step-btn"
           className="btn-secondary disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2 text-sm py-2"
         >
-          ← Previous
+          {L.prevStep}
         </button>
 
         {activeStep < totalSteps - 1 ? (
@@ -111,11 +124,11 @@ export default function StepGuide({ steps, activeStep, onStepChange, lang, dish 
             id="next-step-btn"
             className="btn-primary flex items-center gap-2 text-sm py-2"
           >
-            Next Step →
+            {L.nextStep}
           </button>
         ) : (
           <div className="flex items-center gap-2 text-sage font-display font-bold text-sm">
-            <span>🎉</span> Recipe Complete!
+            <span>🎉</span> {L.recipeComplete}
           </div>
         )}
       </div>
@@ -123,7 +136,7 @@ export default function StepGuide({ steps, activeStep, onStepChange, lang, dish 
       {/* Language badge */}
       <div className="mt-3 flex items-center gap-2 text-xs text-charcoal/40">
         <span>{lang.flag}</span>
-        <span>Guide in {lang.name}</span>
+        <span>{L.guideIn} {lang.nativeName}</span>
       </div>
     </div>
   );
