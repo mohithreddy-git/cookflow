@@ -79,7 +79,7 @@ export default function IngredientChecklist({ ingredients, checkedItems, onCheck
       {/* Tools section */}
       <div className="mt-5 pt-4 border-t-2 border-charcoal/5">
         <h3 className="font-display font-semibold text-charcoal mb-3 flex items-center gap-2 text-sm">
-          <span>🔪</span> Tools Needed
+          <span>🔪</span> Tools Needed!
         </h3>
         <div className="flex flex-wrap gap-2">
           {['Knife', 'Cutting board', 'Pan / Pot', 'Mixing bowl', 'Spatula', 'Measuring cups'].map((tool) => (
